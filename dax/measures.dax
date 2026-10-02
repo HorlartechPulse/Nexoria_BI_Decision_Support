@@ -1,0 +1,58 @@
+-- Nexoria Executive DSS — core DAX measures
+-- Create table _Measures and paste
+
+Revenue Actual =
+CALCULATE ( SUM ( FactFinance[Revenue] ), DimScenario[ScenarioName] = "Actual" )
+
+Revenue Budget =
+CALCULATE ( SUM ( FactFinance[Revenue] ), DimScenario[ScenarioName] = "Budget" )
+
+Revenue Forecast =
+CALCULATE ( SUM ( FactFinance[Revenue] ), DimScenario[ScenarioName] = "Forecast" )
+
+Revenue vs Budget % =
+DIVIDE ( [Revenue Actual] - [Revenue Budget], [Revenue Budget] )
+
+EBITDA Actual =
+CALCULATE ( SUM ( FactFinance[EBITDA] ), DimScenario[ScenarioName] = "Actual" )
+
+EBITDA Budget =
+CALCULATE ( SUM ( FactFinance[EBITDA] ), DimScenario[ScenarioName] = "Budget" )
+
+EBITDA vs Budget % =
+DIVIDE ( [EBITDA Actual] - [EBITDA Budget], [EBITDA Budget] )
+
+COGS Actual =
+CALCULATE ( SUM ( FactFinance[COGS] ), DimScenario[ScenarioName] = "Actual" )
+
+Gross Margin % =
+DIVIDE ( [Revenue Actual] - [COGS Actual], [Revenue Actual] )
+
+Gross Margin Budget % =
+VAR RevB = [Revenue Budget]
+VAR CogsB = CALCULATE ( SUM ( FactFinance[COGS] ), DimScenario[ScenarioName] = "Budget" )
+RETURN DIVIDE ( RevB - CogsB, RevB )
+
+Gross Margin vs Budget pp =
+[Gross Margin %] - [Gross Margin Budget %]
+
+Active Customers =
+CALCULATE ( SUM ( FactFinance[ActiveCustomers] ), DimScenario[ScenarioName] = "Actual" )
+
+Headcount Actual =
+CALCULATE ( AVERAGE ( FactFinance[Headcount] ), DimScenario[ScenarioName] = "Actual" )
+
+Headcount Budget =
+CALCULATE ( AVERAGE ( FactFinance[Headcount] ), DimScenario[ScenarioName] = "Budget" )
+
+Headcount Variance =
+DIVIDE ( [Headcount Actual] - [Headcount Budget], [Headcount Budget] )
+
+System Uptime =
+CALCULATE ( AVERAGE ( FactFinance[SystemUptime] ), DimScenario[ScenarioName] = "Actual" )
+
+System Uptime Budget =
+CALCULATE ( AVERAGE ( FactFinance[SystemUptime] ), DimScenario[ScenarioName] = "Budget" )
+
+Uptime Variance pp =
+[System Uptime] - [System Uptime Budget]
